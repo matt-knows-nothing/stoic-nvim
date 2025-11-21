@@ -179,7 +179,7 @@ local lsp_config = {
 	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "tailwindcss", "ts_ls", "cssls", "html", "lua_ls" },
+			ensure_installed = { "tailwindcss", "vtsls", "cssls", "html", "lua_ls", "svelte" },
 		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
@@ -188,6 +188,15 @@ local lsp_config = {
 	},
 }
 
+-- vim.lsp.config["vtsls"] = {
+-- 	cmd = { "typescript-language-server", "--stdio" },
+-- 	-- filetypes is optional; by default it's set in lspconfig
+-- 	-- filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+-- 	settings = {},
+-- 	on_init = function(client, _)
+-- 		client.handlers["textDocument/publishDiagnostics"] = function() end
+-- 	end,
+-- }
 -- vim.lsp.enable("svelte", "cssls", "html", "ts_ls", "lua_ls" )
 
 local lsp_extras = {
@@ -248,12 +257,12 @@ local lsp_extras = {
 			},
 		},
 	},
-	-- 	{
-	--   'esmuellert/nvim-eslint',
-	--   config = function()
-	--     require('nvim-eslint').setup({})
-	--   end,
-	-- }
+	-- {
+	-- 	"esmuellert/nvim-eslint",
+	-- 	config = function()
+	-- 		require("nvim-eslint").setup({})
+	-- 	end,
+	-- },
 }
 
 -- Functions

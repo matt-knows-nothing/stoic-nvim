@@ -13,6 +13,10 @@ vim.keymap.set("n", "<leader>dd", function()
 	vim.cmd("q!")
 	vim.cmd("mode")
 end, { desc = "Delete buffer" })
+vim.keymap.set({ "n", "i", "v" }, "<C-q>", function()
+	vim.cmd("q!")
+end, { desc = "Force quit" })
+vim.o.clipboard = "unnamedplus"
 
 -- Lazy Package Manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -109,10 +113,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		opts.desc = "See available code actions"
 		keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-		opts.desc = "Show diagnostics in location list"
-		keymap.set({ "n", "v" }, "<leader>ds", function()
-			vim.diagnostic.setloclist()
-		end, opts)
+		-- opts.desc = "Show diagnostics in location list"
+		-- keymap.set({ "n", "v" }, "<leader>ds", function()
+		-- 	vim.diagnostic.setloclist()
+		-- end, opts)
+
+		vim.keymap.set("n", "<leader>ds", function()
+			require("telescope.builtin").diagnostics({ bufnr = 0 })
+		end, { desc = "Telescope diagnostics for current buffer" })
 
 		opts.desc = "Smart rename"
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
@@ -179,7 +187,16 @@ local lsp_config = {
 	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "tailwindcss", "vtsls", "cssls", "html", "lua_ls", "svelte" },
+			ensure_installed = {
+				"clangd",
+				"rust_analyzer",
+				"tailwindcss",
+				"vtsls",
+				"cssls",
+				"html",
+				"lua_ls",
+				"svelte",
+			},
 		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
@@ -208,9 +225,10 @@ local lsp_extras = {
 		---@type blink.cmp.Config
 		opts = {
 			keymap = {
-				preset = "enter",
-				["<S-Tab>"] = { "select_prev", "fallback" },
-				["<Tab>"] = { "select_next", "fallback" },
+				preset = "super-tab",
+
+				["<C-j>"] = { "select_next", "fallback" },
+				["<C-k>"] = { "select_prev", "fallback" },
 			},
 			appearance = {
 				nerd_font_variant = "mono",
@@ -288,6 +306,17 @@ local function transparency()
 	vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { bg = "none", fg = "#444444" }) -- optional, customize
+
+	vim.api.nvim_set_hl(0, "TSContext", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "TSNote", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "TSWarning", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "TSDanger", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "TSKeyword", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "TSVariable", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "@keyword", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "@variable", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "@tag", { bg = "NONE" })
+	vim.api.nvim_set_hl(0, "@markup", { bg = "NONE" })
 
 	-- Diagnostic
 	vim.api.nvim_set_hl(0, "SignColumn", { bg = "none", fg = "#7aa2f7" })

@@ -34,7 +34,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Vim opts
 vim.opt.termguicolors = true
-vim.opt.signcolumn = "number"
+vim.opt.signcolumn = "yes"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
@@ -42,6 +42,15 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.tabstop = 2
 vim.opt.smartindent = true
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	callback = function()
+		vim.bo.shiftwidth = 2
+		vim.bo.tabstop = 2
+		vim.bo.softtabstop = 2
+		vim.bo.expandtab = true
+	end,
+})
 
 local file_management = {
 	{
@@ -196,6 +205,7 @@ local lsp_config = {
 				"html",
 				"lua_ls",
 				"svelte",
+				"jdtls",
 			},
 		},
 		dependencies = {
@@ -283,12 +293,17 @@ local lsp_extras = {
 	-- },
 }
 
+local utils = {
+	{
+		"lewis6991/gitsigns.nvim",
+	},
+}
 -- Functions
 local function transparency()
 	-- Normal UI
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 	vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 	--Telescope
@@ -358,6 +373,13 @@ local aesthetics = {
 			transparency()
 		end,
 	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			theme = "tokyonight",
+		},
+	},
 }
 
 local one_liners = {
@@ -389,6 +411,7 @@ require("lazy").setup({
 	one_liners,
 	lsp_config,
 	lsp_extras,
+	utils,
 	-- spec = {},
 	change_detection = { notify = false },
 })

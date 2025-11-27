@@ -51,6 +51,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.bo.expandtab = true
 	end,
 })
+vim.opt.clipboard = unnamedplus
 
 local file_management = {
 	{
@@ -206,6 +207,8 @@ local lsp_config = {
 				"lua_ls",
 				"svelte",
 				"jdtls",
+				"bashls",
+				"asm_lsp",
 			},
 		},
 		dependencies = {
@@ -237,6 +240,7 @@ local lsp_extras = {
 			keymap = {
 				preset = "super-tab",
 
+				["<CR>"] = { "accept", "fallback" },
 				["<C-j>"] = { "select_next", "fallback" },
 				["<C-k>"] = { "select_prev", "fallback" },
 			},
@@ -244,9 +248,16 @@ local lsp_extras = {
 				nerd_font_variant = "mono",
 			},
 			completion = {
-				documentation = { auto_show = false },
+				documentation = { auto_show = true },
 				ghost_text = { enabled = true, show_with_menu = true },
+				insert = false,
+				accept = {
+					select = true,
+					behavior = "replace",
+					replace = "cursor_before",
+				},
 			},
+			signature = { enabled = true },
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 				path = {
@@ -378,6 +389,9 @@ local aesthetics = {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			theme = "tokyonight",
+			sections = {
+				lualine_x = { "lsp_status", "fileformat", "filetype" },
+			},
 		},
 	},
 }
@@ -399,6 +413,9 @@ local one_liners = {
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = true,
+		-- opts = {
+		-- 	map_cr = false,
+		-- },
 		-- use opts = {} for passing setup options
 		-- this is equivalent to setup({}) function
 	},

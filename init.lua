@@ -209,6 +209,8 @@ local lsp_config = {
 				"jdtls",
 				"bashls",
 				"asm_lsp",
+				"pyright",
+				-- "hls",
 			},
 		},
 		dependencies = {
@@ -228,6 +230,7 @@ local lsp_config = {
 -- 	end,
 -- }
 -- vim.lsp.enable("svelte", "cssls", "html", "ts_ls", "lua_ls" )
+vim.lsp.enable("hls")
 
 local lsp_extras = {
 	{
@@ -288,6 +291,7 @@ local lsp_extras = {
 				ts = { "prettierd", "prettier", stop_after_first = true },
 				jsx = { "prettierd", "prettier", stop_after_first = true },
 				tsx = { "prettierd", "prettier", stop_after_first = true },
+				python = { "ruff_format" },
 			},
 			format_on_save = {
 				-- These options will be passed to conform.format()
